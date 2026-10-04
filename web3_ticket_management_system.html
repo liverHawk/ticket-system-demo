@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ブロックチェーンを用いたチケット管理システム</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #0f172a; /* Slate 900 */
+            color: #f8fafc; /* Slate 50 */
+            overflow-x: hidden;
+        }
+        
+        /* Custom Gradient Text */
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(to right, #3b82f6, #8b5cf6, #ec4899);
+        }
+
+        /* Scroll Animation Classes */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
+        /* Blockchain Background Pattern */
+        .bg-pattern {
+            background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0);
+            background-size: 32px 32px;
+        }
+    </style>
+</head>
+<body class="bg-pattern antialiased">
+
+    <section class="min-h-screen flex flex-col justify-center items-center text-center px-4 relative overflow-hidden">
+        <!-- Decorative background elements -->
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl -z-10"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl -z-10"></div>
+
+        <div class="fade-in-up max-w-4xl mx-auto mt-20">
+            <span class="inline-block py-1 px-3 rounded-full bg-blue-500/20 text-blue-300 text-sm font-semibold mb-6 tracking-wider border border-blue-500/30">
+                関西テック・クリエイター・チャレンジ Web3コース
+            </span>
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight tracking-tight">
+                <span class="text-gradient">ブロックチェーン</span>を用いた<br/>チケット管理システム
+            </h1>
+            <p class="text-xl md:text-2xl text-slate-300 mb-12">
+                マイナンバーカード × NFTで実現する、<br class="md:hidden"/>真に公正なエンターテインメントの未来
+            </p>
+            <div class="text-slate-400">
+                <p class="text-lg font-medium text-slate-200">高藏 駿之</p>
+                <p class="text-sm mt-1">大阪公立大学 大学院情報学研究科 学際情報学専攻 1年</p>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-10 animate-bounce text-slate-500">
+            <i class="ph ph-caret-double-down text-3xl"></i>
+        </div>
+    </section>
+
+    <section class="py-24 px-4 md:px-8 bg-slate-900/50 backdrop-blur-sm border-t border-slate-800">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-16 fade-in-up">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">なぜ、転売はなくならないのか？</h2>
+                <div class="h-1 w-20 bg-blue-500 mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="fade-in-up delay-100">
+                    <h3 class="text-2xl font-bold text-red-400 mb-4 flex items-center gap-2">
+                        <i class="ph ph-warning-circle"></i> 現状の課題
+                    </h3>
+                    <ul class="space-y-4 text-slate-300 text-lg">
+                        <li class="flex items-start gap-3">
+                            <i class="ph ph-trend-up text-red-400 mt-1"></i>
+                            <div>
+                                <strong>高額な不正転売の横行</strong>
+                                <p class="text-sm text-slate-400 mt-1">本来アーティストや主催者に還元されるべき利益が、不当に搾取されています。</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="ph ph-gavel text-red-400 mt-1"></i>
+                            <div>
+                                <strong>法律・ルールの限界</strong>
+                                <p class="text-sm text-slate-400 mt-1">2019年に「チケット不正転売禁止法」が施行されても、根絶には至っていません。</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="bg-slate-800/50 p-8 rounded-2xl border border-slate-700 fade-in-up delay-200 shadow-xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-10">
+                        <i class="ph ph-mask-happy text-8xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-4 text-white">抜け道：身分証の貸し借り</h4>
+                    <p class="text-slate-300 mb-4">
+                        厳格に本人確認を行っているイベントは少なく、名前が印刷されていても<strong class="text-red-400">「保険証などの顔写真のない身分証の貸し借り」</strong>によって突破されているのが現状です。（※法律で禁止された行為です）
+                    </p>
+                    <div class="flex items-center justify-between p-4 bg-slate-900 rounded-lg border border-red-500/30">
+                        <div class="text-center">
+                            <i class="ph ph-ticket text-3xl text-slate-400"></i>
+                            <p class="text-xs mt-1">転売チケット</p>
+                        </div>
+                        <i class="ph ph-plus text-slate-500"></i>
+                        <div class="text-center">
+                            <i class="ph ph-identification-card text-3xl text-red-400"></i>
+                            <p class="text-xs mt-1">他人の保険証</p>
+                        </div>
+                        <i class="ph ph-arrow-right text-slate-500"></i>
+                        <div class="text-center">
+                            <i class="ph ph-door-open text-3xl text-green-400"></i>
+                            <p class="text-xs mt-1 text-green-400">不正入場成功</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 px-4 md:px-8 relative">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-16 fade-in-up">
+                <span class="text-blue-400 font-bold tracking-widest text-sm mb-2 block">SOLUTION 01</span>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">絶対にごまかせない本人確認</h2>
+                <div class="h-1 w-20 bg-blue-500 mx-auto rounded-full"></div>
+                <p class="text-slate-400 mt-6 max-w-2xl mx-auto">偽造が極めて困難なマイナンバーカードと、データ改ざんを許さないブロックチェーン技術を組み合わせます。</p>
+            </div>
+
+            <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-8 md:p-12 border border-slate-700 shadow-2xl fade-in-up">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center relative">
+                    <!-- Connector line -->
+                    <div class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500/20 via-blue-500 to-purple-500/20 -translate-y-1/2 z-0"></div>
+
+                    <!-- Step 1 -->
+                    <div class="relative z-10 bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-slate-700/50">
+                        <div class="w-16 h-16 mx-auto bg-blue-500/20 rounded-full flex items-center justify-center mb-4 border border-blue-500/50">
+                            <i class="ph ph-device-mobile-camera text-2xl text-blue-400"></i>
+                        </div>
+                        <h4 class="font-bold text-lg mb-2">1. チケット購入・登録</h4>
+                        <p class="text-sm text-slate-400">マイナンバーカードから本人情報（公開鍵など）を読み取り、チケット情報と紐付けます。</p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="relative z-10 bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-blue-500/30 shadow-[0_0_30px_rgba(59,130,246,0.15)] transform md:-translate-y-4">
+                        <div class="w-16 h-16 mx-auto bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center mb-4 shadow-lg">
+                            <i class="ph ph-cube-transparent text-2xl text-white"></i>
+                        </div>
+                        <h4 class="font-bold text-lg mb-2">2. ブロックチェーンへ記録</h4>
+                        <p class="text-sm text-slate-400">
+                            <strong class="text-blue-300">プライバシー保護:</strong> 個人情報そのものではなく、検証用の<strong class="text-white">ハッシュ値</strong>のみを暗号化してブロックチェーンに刻み、永続化と耐改ざん性を実現します。
+                        </p>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="relative z-10 bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-slate-700/50">
+                        <div class="w-16 h-16 mx-auto bg-purple-500/20 rounded-full flex items-center justify-center mb-4 border border-purple-500/50">
+                            <i class="ph ph-scan text-2xl text-purple-400"></i>
+                        </div>
+                        <h4 class="font-bold text-lg mb-2">3. 入場時の厳格照合</h4>
+                        <p class="text-sm text-slate-400">会場でカードをタッチ。ブロックチェーン上のデータとカードの情報を暗号学的に照合し、本人以外は絶対に入場できません。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 px-4 bg-gradient-to-b from-transparent to-red-900/10 border-y border-slate-800">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="fade-in-up">
+                <h2 class="text-4xl md:text-5xl font-black mb-8">これで転売問題は解決！</h2>
+                <div class="inline-block">
+                    <p class="text-2xl md:text-3xl font-bold text-red-500 animate-pulse bg-red-500/10 px-6 py-3 rounded-lg border border-red-500/30">
+                        …とはいきません。
+                    </p>
+                </div>
+            </div>
+            
+            <div class="mt-16 grid grid-cols-1 sm:grid-cols-2 gap-8 text-left fade-in-up delay-100">
+                <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+                    <h3 class="text-xl font-bold text-red-400 mb-3 border-b border-slate-700 pb-2">防ぐべき「悪意ある転売」</h3>
+                    <ul class="space-y-2 text-slate-300">
+                        <li><i class="ph-fill ph-x-circle text-red-500 mr-2"></i>法外な価格での金銭目的</li>
+                        <li><i class="ph-fill ph-x-circle text-red-500 mr-2"></i>個人情報の不正取得</li>
+                        <li><i class="ph-fill ph-x-circle text-red-500 mr-2"></i>偽チケットによる詐欺</li>
+                    </ul>
+                </div>
+                <div class="bg-slate-800 p-6 rounded-xl border border-blue-500/30 shadow-[0_0_20px_rgba(59,130,246,0.1)]">
+                    <h3 class="text-xl font-bold text-blue-400 mb-3 border-b border-slate-700 pb-2">救うべき「悪意のない譲渡」</h3>
+                    <ul class="space-y-2 text-slate-300">
+                        <li><i class="ph-fill ph-check-circle text-blue-400 mr-2"></i>急な病気や仕事で行けなくなった</li>
+                        <li><i class="ph-fill ph-check-circle text-blue-400 mr-2"></i>友人とチケットが重複して当選した</li>
+                    </ul>
+                    <p class="mt-4 text-sm text-slate-400 font-bold">
+                        ガチガチの本人確認システムだけでは、こうした正当な理由を持つファンまで苦しめることになります。
+                    </p>
+                </div>
+            </div>
+            
+            <div class="mt-12 fade-in-up delay-200">
+                <p class="text-2xl font-bold text-white">
+                    違法ではない、<span class="text-gradient">「公正公平にチケットを流通させる仕組み」</span>が同時に必要なのです。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 px-4 md:px-8">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-16 fade-in-up">
+                <span class="text-purple-400 font-bold tracking-widest text-sm mb-2 block">SOLUTION 02</span>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">NFTチケット販売・流通システム</h2>
+                <div class="h-1 w-20 bg-purple-500 mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- NFT Features -->
+                <div class="space-y-6 fade-in-up">
+                    <div class="flex gap-4 items-start p-6 bg-slate-800/50 rounded-2xl border border-slate-700 hover:border-purple-500/50 transition-colors">
+                        <div class="bg-purple-500/20 p-3 rounded-xl">
+                            <i class="ph ph-handshake text-3xl text-purple-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">安全で簡単な譲渡機能</h3>
+                            <p class="text-slate-400 text-sm leading-relaxed">
+                                NFTは元来「所有権の移転」を前提に設計されています。急に行けなくなっても、システム上で安全に他者へチケット権利（NFT）を譲渡できます。
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4 items-start p-6 bg-slate-800/50 rounded-2xl border border-slate-700 hover:border-purple-500/50 transition-colors">
+                        <div class="bg-purple-500/20 p-3 rounded-xl">
+                            <i class="ph ph-shield-check text-3xl text-purple-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">スマートコントラクトによる価格制御</h3>
+                            <p class="text-slate-400 text-sm leading-relaxed">
+                                ブロックチェーンのプログラム（スマートコントラクト）により、「定価以上での転売をシステム的に禁止する」といったルールを強制でき、高額転売を根絶します。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Secondary Market Value -->
+                <div class="bg-gradient-to-br from-indigo-900/50 to-purple-900/50 p-8 rounded-3xl border border-indigo-500/30 fade-in-up delay-100 flex flex-col justify-center">
+                    <h3 class="text-2xl font-bold mb-6 text-white flex items-center gap-2">
+                        <i class="ph ph-sparkle text-yellow-400"></i> さらに広がる、NFTの二次価値
+                    </h3>
+                    <p class="text-slate-300 mb-6">
+                        紙のチケットは入場すればゴミになりますが、NFTチケットは<strong class="text-white">「永遠に唯一無二のデジタル記念品」</strong>として手元に残ります。これにより新たなビジネスの可能性が生まれます。
+                    </p>
+                    <ul class="space-y-3 mb-6">
+                        <li class="flex items-center gap-3 bg-slate-900/50 p-3 rounded-lg text-sm text-slate-200">
+                            <i class="ph ph-gift text-pink-400 text-lg"></i> NFT保有者だけの限定入場特典データ
+                        </li>
+                        <li class="flex items-center gap-3 bg-slate-900/50 p-3 rounded-lg text-sm text-slate-200">
+                            <i class="ph ph-globe text-blue-400 text-lg"></i> 過去のライブ参加者限定の特設サイトアクセス
+                        </li>
+                        <li class="flex items-center gap-3 bg-slate-900/50 p-3 rounded-lg text-sm text-slate-200">
+                            <i class="ph ph-ticket text-green-400 text-lg"></i> 次回ライブチケットの優先購入権や割引
+                        </li>
+                    </ul>
+                    <p class="text-sm text-indigo-300 font-bold text-center">
+                        コンサート業界だけでなく、周辺業界をも活性化させるポテンシャルを秘めています。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 px-4 bg-slate-900 text-center border-t border-slate-800">
+        <div class="max-w-4xl mx-auto fade-in-up">
+            <h2 class="text-3xl md:text-4xl font-bold mb-8">提案システムの全体像と今後の展望</h2>
+            
+            <div class="flex flex-col md:flex-row justify-center gap-6 mb-12">
+                <div class="flex-1 bg-slate-800 p-6 rounded-xl border-t-4 border-blue-500">
+                    <h3 class="text-xl font-bold text-blue-400 mb-2">1. 本人確認システム</h3>
+                    <p class="text-slate-400 text-sm">マイナンバー×ブロックチェーンによる、プライバシーを保護しつつ絶対に誤魔化せない入場管理。</p>
+                </div>
+                <div class="flex items-center justify-center text-slate-600">
+                    <i class="ph ph-plus text-3xl hidden md:block"></i>
+                </div>
+                <div class="flex-1 bg-slate-800 p-6 rounded-xl border-t-4 border-purple-500">
+                    <h3 class="text-xl font-bold text-purple-400 mb-2">2. チケット流通システム</h3>
+                    <p class="text-slate-400 text-sm">NFTとスマートコントラクトによる、価格が制御された安全で簡単な譲渡機能と二次活用。</p>
+                </div>
+            </div>
+
+            <div class="bg-slate-800/50 p-8 rounded-2xl border border-slate-700 max-w-3xl mx-auto text-left">
+                <h3 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                    <i class="ph ph-rocket-launch text-blue-400"></i> Future Work
+                </h3>
+                <p class="text-slate-300 mb-4 leading-relaxed">
+                    本プロジェクトでは数ヶ月の開発期間で、この大掛かりなシステムの基礎的なプロトタイプ構築を行いました。技術的な実証は進みましたが、完全な社会実装・商用化に向けては、UI/UXの改善やスケーラビリティの確保など、新たな課題も見えてきました。
+                </p>
+                <p class="text-slate-300 leading-relaxed font-bold">
+                    個人的には将来、博士課程へ進学することを視野に入れており、このチケットシステムのさらなる堅牢化と社会実装を、自身の重要な研究課題として担っていく決意です。
+                </p>
+            </div>
+
+            <div class="mt-16 inline-block bg-gradient-to-r from-blue-600 to-purple-600 p-[1px] rounded-full">
+                <div class="bg-slate-900 rounded-full px-8 py-4 flex items-center gap-4">
+                    <div class="text-left">
+                        <p class="text-sm text-slate-400 mb-1">実証実験へのご協力、開発サポート、ご意見をお待ちしております。</p>
+                        <a href="mailto:query@g-ticket-c.com" class="text-xl font-bold text-white hover:text-blue-400 transition-colors flex items-center gap-2">
+                            <i class="ph ph-envelope-simple text-blue-400"></i> query@g-ticket-c.com
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <p class="text-slate-500 mt-12 text-sm">
+                © 2026 T.Takakura | Kansai Tech Creator Challenge Web3 Course
+            </p>
+        </div>
+    </section>
+
+    <script>
+        // Simple Intersection Observer for scroll animations
+        document.addEventListener("DOMContentLoaded", () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.2
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        // Optional: Stop observing once visible if you only want it to animate once
+                        // observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const animElements = document.querySelectorAll('.fade-in-up');
+            animElements.forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>
